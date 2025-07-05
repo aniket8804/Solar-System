@@ -142,7 +142,11 @@ function planetRevolver(time, speed, planet, orbitRadius, planetName) {
   function animate(time) {
     requestAnimationFrame(animate);
   
-    if (isPaused) return; // To play/pause the rotation
+    if (isPaused) {
+    controls.update(); // still allow camera controls
+    renderer.render(scene, camera); // still render the scene
+    return; // ✅ skip planet motion, but not the loop
+  }
   
     const rotationSpeed = 0.005;
     planet_earth.rotation.y += rotationSpeed;

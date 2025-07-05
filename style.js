@@ -26,6 +26,7 @@ let revolutionSpeeds = {
   neptune: 0.4
 };
 
+let previousRevolutionSpeeds = { ...revolutionSpeeds };
 let isPaused = false;
 
 function createMaterialArray() {
@@ -187,15 +188,24 @@ function setupSpeedControls() {
 }
 
 document.getElementById("pauseBtn").addEventListener("click", () => {
-  isPaused = true;
-  document.getElementById("pauseBtn").disabled = true;
-  document.getElementById("playBtn").disabled = false;
+  if (!isPaused) {
+    previousRevolutionSpeeds = { ...revolutionSpeeds };
+    for (let planet in revolutionSpeeds) {
+      revolutionSpeeds[planet] = 0;
+    }
+    isPaused = true;
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("playBtn").disabled = false;
+  }
 });
 
 document.getElementById("playBtn").addEventListener("click", () => {
-  isPaused = false;
-  document.getElementById("pauseBtn").disabled = false;
-  document.getElementById("playBtn").disabled = true;
+  if (isPaused) {
+    revolutionSpeeds = { ...previousRevolutionSpeeds };
+    isPaused = false;
+    document.getElementById("pauseBtn").disabled = false;
+    document.getElementById("playBtn").disabled = true;
+  }
 });
 
 
